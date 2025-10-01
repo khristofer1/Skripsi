@@ -7,39 +7,60 @@ function DashboardPage() {
   const [myEvents, setMyEvents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
 
-  useEffect(() => {
-    const fetchMyEvents = async () => {
-      // Ambil token dari Local Storage
-      const token = localStorage.getItem('token');
-      if (!token) {
-        setError('You must be logged in to view this page.');
-        setLoading(false);
-        return;
-      }
-
-      // Siapkan header otorisasi untuk request Axios
-      const config = {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      };
-
-      try {
-        setLoading(true);
-        // Panggil endpoint baru yang terproteksi
-        const response = await axios.get('http://localhost:5000/api/events/my-events/all', config);
-        setMyEvents(response.data);
-        setLoading(false);
-      } catch (err) {
-        setError('Failed to fetch your events.');
-        console.error(err);
-        setLoading(false);
-      }
+  // Fungsi untuk mengambil data event
+  const fetchMyEvents = async () => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      setError('You must be logged in to view this page.');
+      setLoading(false);
+      return;
+    }
+    const config = {
+      headers: { 'Authorization': `Bearer ${token}` }
     };
+    try {
+      setLoading(true);
+      const response = await axios.get('http://localhost:5000/api/events/my-events/all', config);
+      setMyEvents(response.data);
+      setLoading(false);
+    } catch (err) {
+      setError('Failed to fetch your events.');
+      console.error(err);
+      setLoading(false);
+    }
+  };
 
+  // useEffect untuk menjalankan fetchMyEvents saat komponen dimuat
+  useEffect(() => {
     fetchMyEvents();
   }, []);
+
+  // Fungsi untuk delete
+  const handleDelete = async (eventId) => {
+    // Tampilkan konfirmasi sebelum menghapus
+    if (window.confirm('Are you sure you want to delete this event?')) {
+      try {
+        const token = localStorage.getItem('token');
+        const config = {
+          headers: { 'Authorization': `Bearer ${token}` }
+        };
+
+        // Kirim permintaan DELETE ke backend
+        await axios.delete(`http://localhost:5000/api/events/${eventId}`, config);
+        
+        setSuccess('Event deleted successfully.');
+        
+        // Perbarui daftar event di UI tanpa perlu refresh halaman
+        setMyEvents(myEvents.filter(event => event.id !== eventId));
+
+      } catch (err) {
+        setError('Failed to delete the event.');
+        console.error(err);
+      }
+    }
+  };
 
   if (loading) {
     return (
@@ -64,6 +85,9 @@ function DashboardPage() {
         <Button as={Link} to="/events/create">Create New Event</Button>
       </div>
       
+      {error && <Alert variant="danger">{error}</Alert>}
+      {success && <Alert variant="success">{success}</Alert>}
+
       <h3>My Events</h3>
       <Table striped bordered hover responsive>
         <thead>
@@ -83,7 +107,9 @@ function DashboardPage() {
                 <td>{event.location}</td>
                 <td>
                   <Button variant="info" size="sm" className="me-2">Edit</Button>
-                  <Button variant="danger" size="sm">Delete</Button>
+                  <Button variant="danger" size="sm" onClick={() => handleDelete(event.id)}>
+                    Delete
+                  </Button>
                 </td>
               </tr>
             ))
