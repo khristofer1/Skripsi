@@ -51,7 +51,7 @@ Untuk menjalankan proyek ini di komputer lokal Anda, ikuti langkah-langkah berik
 
 1.  **Clone repository ini:**
     ```bash
-    git clone https://github.com/khristofer1/Skripsi/edit/main/README.md
+    git clone https://github.com/khristofer1/Skripsi
     ```
 
 2.  **Masuk ke direktori backend:**
