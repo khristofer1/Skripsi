@@ -2,7 +2,6 @@
 
 Aplikasi web full-stack untuk manajemen event yang dibangun sebagai proyek skripsi. Platform ini memungkinkan pengguna untuk mendaftar, login, membuat, dan mengelola event mereka sendiri. Untuk meningkatkan keterlibatan pengguna, aplikasi ini juga dilengkapi dengan sistem gamifikasi berupa poin dan referral.
 
-*(Tambahkan screenshot aplikasi Anda di sini nanti)*
 ![App Screenshot](image/home-page.png)
 
 ---
