@@ -106,7 +106,9 @@ function DashboardPage() {
                 <td>{new Date(event.event_date).toLocaleDateString()}</td>
                 <td>{event.location}</td>
                 <td>
-                  <Button variant="info" size="sm" className="me-2">Edit</Button>
+                  <Button as={Link} to={`/events/edit/${event.id}`} variant="info" size="sm" className="me-2">
+                    Edit
+                  </Button>
                   <Button variant="danger" size="sm" onClick={() => handleDelete(event.id)}>
                     Delete
                   </Button>

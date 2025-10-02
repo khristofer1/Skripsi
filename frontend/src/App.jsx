@@ -9,6 +9,7 @@ import DashboardPage from './pages/DashboardPage';
 import ProtectedRoute from './components/ProtectedRoute';
 import EventDetailPage from './pages/EventDetailPage';
 import CreateEventPage from './pages/CreateEventPage';
+import EditEventPage from './pages/EditEventPage';
 
 function App() {
   return (
@@ -32,6 +33,14 @@ function App() {
             element={
               <ProtectedRoute>
                 <CreateEventPage />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/events/edit/:id" 
+            element={
+              <ProtectedRoute>
+                <EditEventPage />
               </ProtectedRoute>
             } 
           />
