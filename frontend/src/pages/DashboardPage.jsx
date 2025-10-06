@@ -1,40 +1,45 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Container, Table, Button, Spinner, Alert } from 'react-bootstrap';
+import { Container, Table, Button, Spinner, Alert, Card, Row, Col } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
 function DashboardPage() {
   const [myEvents, setMyEvents] = useState([]);
+  const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
 
-  // Fungsi untuk mengambil data event
-  const fetchMyEvents = async () => {
-    const token = localStorage.getItem('token');
-    if (!token) {
-      setError('You must be logged in to view this page.');
-      setLoading(false);
-      return;
-    }
-    const config = {
-      headers: { 'Authorization': `Bearer ${token}` }
-    };
-    try {
-      setLoading(true);
-      const response = await axios.get('http://localhost:5000/api/events/my-events/all', config);
-      setMyEvents(response.data);
-      setLoading(false);
-    } catch (err) {
-      setError('Failed to fetch your events.');
-      console.error(err);
-      setLoading(false);
-    }
-  };
-
-  // useEffect untuk menjalankan fetchMyEvents saat komponen dimuat
   useEffect(() => {
-    fetchMyEvents();
+    const fetchData = async () => {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        setError('You must be logged in to view this page.');
+        setLoading(false);
+        return;
+      }
+      const config = {
+        headers: { 'Authorization': `Bearer ${token}` }
+      };
+      try {
+        setLoading(true);
+        // Ambil data user dan data event secara bersamaan
+        const [userResponse, eventsResponse] = await Promise.all([
+          axios.get('http://localhost:5000/api/users/me', config),
+          axios.get('http://localhost:5000/api/events/my-events/all', config)
+        ]);
+        
+        setUser(userResponse.data);
+        setMyEvents(eventsResponse.data);
+        setLoading(false);
+      } catch (err) {
+        setError('Failed to fetch dashboard data.');
+        console.error(err);
+        setLoading(false);
+      }
+    };
+
+    fetchData();
   }, []);
 
   // Fungsi untuk delete
@@ -65,7 +70,7 @@ function DashboardPage() {
   if (loading) {
     return (
       <Container className="text-center mt-5">
-        <Spinner animation="border" />
+        <Spinner animation="border"/>
       </Container>
     );
   }
@@ -84,7 +89,28 @@ function DashboardPage() {
         <h1>My Dashboard</h1>
         <Button as={Link} to="/events/create">Create New Event</Button>
       </div>
-      
+      {user && (
+        <Row className="mb-4">
+          <Col md={6}>
+            <Card>
+              <Card.Body>
+                <Card.Title>My Points</Card.Title>
+                <Card.Text className="fs-2 fw-bold">{user.points}</Card.Text>
+              </Card.Body>
+            </Card>
+          </Col>
+          <Col md={6}>
+            <Card>
+              <Card.Body>
+                <Card.Title>My Referral Code</Card.Title>
+                <Card.Text className="fs-2 fw-bold">{user.id}</Card.Text>
+                <Card.Subtitle className="text-muted">Share this code with new users!</Card.Subtitle>
+              </Card.Body>
+            </Card>
+          </Col>
+        </Row>
+      )}
+
       {error && <Alert variant="danger">{error}</Alert>}
       {success && <Alert variant="success">{success}</Alert>}
 

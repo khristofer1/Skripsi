@@ -2,9 +2,12 @@
 const express = require('express');
 const cors = require('cors');
 require('dotenv').config();
+
+// Impor rute
 const authRoutes = require('./routes/auth');
 const eventRoutes = require('./routes/events');
 const registrationRoutes = require('./routes/registrations');
+const userRoutes = require('./routes/users');
 
 // Inisialisasi aplikasi express
 const app = express();
@@ -25,6 +28,7 @@ app.get('/', (req, res) => {
 app.use('/api/auth', authRoutes);
 app.use('/api/events', eventRoutes);
 app.use('/api/registrations', registrationRoutes);
+app.use('/api/users', userRoutes);
 
 // Menjalankan server
 app.listen(PORT, () => {
