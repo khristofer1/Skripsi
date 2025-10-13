@@ -8,6 +8,7 @@ function RegisterPage() {
     name: '',
     email: '',
     password: '',
+    referralCode: '',
   });
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
@@ -23,7 +24,7 @@ function RegisterPage() {
     setSuccess('');
 
     try {
-      // Kirim data ke endpoint registrasi di backend Anda
+      // Seluruh formData (termasuk referralCode jika diisi) akan dikirim
       const response = await axios.post('http://localhost:5000/api/auth/register', formData);
       setSuccess(response.data); // "User registered successfully"
       
@@ -79,6 +80,17 @@ function RegisterPage() {
           />
         </Form.Group>
 
+        <Form.Group className="mb-3" controlId="formBasicReferral">
+          <Form.Label>Referral Code (Optional)</Form.Label>
+          <Form.Control
+            type="text"
+            placeholder='Enter referral code'
+            name='referralCode'
+            value={formData.referralCode}
+            onChange={handleChange}
+          />
+        </Form.Group>
+        
         <Button variant="primary" type="submit">
           Register
         </Button>
