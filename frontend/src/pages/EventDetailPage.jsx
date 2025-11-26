@@ -95,7 +95,7 @@ function EventDetailPage() {
             {/* Tombol registrasi hanya muncul jika user sudah login */}
             {token && (
               <Button variant="primary" size ="lg" onClick={handleRegister}>
-                Register for this Event
+                Register for this event
               </Button>
             )}
             {!token && (
