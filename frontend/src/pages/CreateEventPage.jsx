@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Form, Button, Container, Alert } from 'react-bootstrap';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 function CreateEventPage() {
@@ -37,7 +36,7 @@ function CreateEventPage() {
     };
 
     try {
-      await axios.post('http://localhost:5000/api/events', formData, config);
+      await API.post('/api/events', formData, config);
       setSuccess('Event created successfully! Redirecting to dashboard...');
       
       setTimeout(() => {

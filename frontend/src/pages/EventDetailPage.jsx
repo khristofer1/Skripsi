@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import { Container, Card, Spinner, Alert, Button } from 'react-bootstrap';
 
 function EventDetailPage() {
@@ -21,7 +20,7 @@ function EventDetailPage() {
     const fetchEvent = async () => {
       try {
         setLoading(true);
-        const response = await axios.get(`http://localhost:5000/api/events/${id}`);
+        const response = await API.get(`/api/events/${id}`);
         setEvent(response.data);
         setLoading(false);
       } catch (err) {
@@ -47,7 +46,7 @@ function EventDetailPage() {
       const body = { event_id: id };
 
       // Panggil endpoint registrasi
-      await axios.post('http://localhost:5000/api/registrations', body, config);
+      await API.post('/api/registrations', body, config);
       setRegisterSuccess('You have successfully registered for this event and earned 10 points!');
 
     } catch (err) {

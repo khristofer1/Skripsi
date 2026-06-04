@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Form, Button, Container, Alert } from 'react-bootstrap';
-import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
 
 function EditEventPage() {
@@ -21,7 +20,7 @@ function EditEventPage() {
   useEffect(() => {
     const fetchEvent = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/api/events/${id}`);
+        const response = await API.get(`/api/events/${id}`);
         const eventData = response.data;
         // Format tanggal agar sesuai dengan input type="datetime-local"
         const formattedDate = new Date(eventData.event_date).toISOString().slice(0, 16);
@@ -50,7 +49,7 @@ function EditEventPage() {
     const token = localStorage.getItem('token');
     const config = { headers: { 'Authorization': `Bearer ${token}` } };
     try {
-      await axios.put(`http://localhost:5000/api/events/${id}`, formData, config);
+      await API.put(`/api/events/${id}`, formData, config);
       setSuccess('Event updated successfully! Redirecting...');
       setTimeout(() => navigate('/dashboard'), 2000);
     } catch (err) {

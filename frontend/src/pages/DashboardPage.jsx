@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import { Container, Table, Button, Spinner, Alert, Card, Row, Col } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
@@ -25,8 +24,8 @@ function DashboardPage() {
         setLoading(true);
         // Ambil data user dan data event secara bersamaan
         const [userResponse, eventsResponse] = await Promise.all([
-          axios.get('http://localhost:5000/api/users/me', config),
-          axios.get('http://localhost:5000/api/events/my-events/all', config)
+          API.get('/api/users/me', config),
+          API.get('/api/events/my-events/all', config)
         ]);
         
         setUser(userResponse.data);
@@ -53,7 +52,7 @@ function DashboardPage() {
         };
 
         // Kirim permintaan DELETE ke backend
-        await axios.delete(`http://localhost:5000/api/events/${eventId}`, config);
+        await API.delete(`/api/events/${eventId}`, config);
         
         setSuccess('Event deleted successfully.');
         

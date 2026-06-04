@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Form, Button, Container, Alert } from 'react-bootstrap';
-import axios from 'axios';
+import API from '../api';
 import { useNavigate } from 'react-router-dom';
 
 function LoginPage() {
@@ -21,7 +21,7 @@ function LoginPage() {
 
     try {
       // 1. Kirim data ke endpoint login di backend
-      const response = await axios.post('http://localhost:5000/api/auth/login', formData);
+      const response = await API.post('/api/login', data);
       
       // 2. Jika berhasil, simpan token yang diterima ke Local Storage
       const { token } = response.data;

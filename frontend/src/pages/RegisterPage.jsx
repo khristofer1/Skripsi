@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Form, Button, Container, Alert } from 'react-bootstrap';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 function RegisterPage() {
@@ -25,7 +24,7 @@ function RegisterPage() {
 
     try {
       // Seluruh formData (termasuk referralCode jika diisi) akan dikirim
-      const response = await axios.post('http://localhost:5000/api/auth/register', formData);
+      const response = await API.post('/api/auth/register', formData);
       setSuccess(response.data); // "User registered successfully"
       
       // Arahkan ke halaman login setelah 2 detik
