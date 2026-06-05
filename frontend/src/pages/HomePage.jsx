@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, Card, Spinner } from 'react-bootstrap';
+import API from '../api';
 import { Link } from 'react-router-dom';
 
 function HomePage() {

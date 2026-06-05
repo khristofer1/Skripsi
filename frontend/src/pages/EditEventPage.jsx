@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Form, Button, Container, Alert } from 'react-bootstrap';
+import API from '../api';
 import { useNavigate, useParams } from 'react-router-dom';
 
 function EditEventPage() {
