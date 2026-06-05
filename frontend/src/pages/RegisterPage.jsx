@@ -26,7 +26,7 @@ function RegisterPage() {
     try {
       // Seluruh formData (termasuk referralCode jika diisi) akan dikirim
       const response = await API.post('/api/auth/register', formData);
-      setSuccess(response.data); // "User registered successfully"
+      setSuccess(response.data.message || response.data || 'User registered successfully'); // "User registered successfully"
       
       // Arahkan ke halaman login setelah 2 detik
       setTimeout(() => {
