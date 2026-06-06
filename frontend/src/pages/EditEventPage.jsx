@@ -34,6 +34,7 @@ function EditEventPage() {
         });
         setLoading(false);
       } catch (err) {
+        console.error(err);
         setError('Failed to fetch event data.');
         setLoading(false);
       }

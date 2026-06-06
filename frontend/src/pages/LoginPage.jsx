@@ -21,7 +21,7 @@ function LoginPage() {
 
     try {
       // 1. Kirim data ke endpoint login di backend
-      const response = await API.post('/api/login', data);
+      const response = await API.post('/api/auth/login', formData);
       
       // 2. Jika berhasil, simpan token yang diterima ke Local Storage
       const { token } = response.data;

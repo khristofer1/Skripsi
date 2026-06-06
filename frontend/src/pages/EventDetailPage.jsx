@@ -25,6 +25,7 @@ function EventDetailPage() {
         setEvent(response.data);
         setLoading(false);
       } catch (err) {
+        console.error(err);
         setError('Failed to fetch event details.');
         setLoading(false);
       }
