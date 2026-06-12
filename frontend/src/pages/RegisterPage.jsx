@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Form, Button, Container, Alert } from 'react-bootstrap';
-import API from '../api';
+import API, { getErrorMessage } from '../api';
 import { useNavigate } from 'react-router-dom';
 
 function RegisterPage() {
@@ -34,7 +34,7 @@ function RegisterPage() {
       }, 2000);
 
     } catch (err) {
-      setError(err.response?.data || 'Something went wrong');
+      setError(getErrorMessage(err, 'Something went wrong'));
     }
   };
 

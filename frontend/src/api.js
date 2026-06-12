@@ -17,4 +17,18 @@ API.interceptors.request.use((config) => {
   return config;
 });
 
+// Helper untuk mengambil pesan error secara aman dari response API
+export const getErrorMessage = (err, defaultMsg = 'Something went wrong') => {
+  if (err.response && err.response.data) {
+    const data = err.response.data;
+    if (typeof data === 'string') {
+      return data;
+    }
+    if (typeof data === 'object') {
+      return data.msg || data.message || data.error || JSON.stringify(data);
+    }
+  }
+  return err.message || defaultMsg;
+};
+
 export default API;

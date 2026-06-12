@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import API from '../api';
+import API, { getErrorMessage } from '../api';
 import { Container, Card, Spinner, Alert, Button } from 'react-bootstrap';
 
 function EventDetailPage() {
@@ -52,7 +52,7 @@ function EventDetailPage() {
       setRegisterSuccess('You have successfully registered for this event and earned 10 points!');
 
     } catch (err) {
-      setRegisterError(err.response?.data || 'Registration failed.');
+      setRegisterError(getErrorMessage(err, 'Registration failed.'));
     }
   };
 

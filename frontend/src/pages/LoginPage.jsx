@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Form, Button, Container, Alert } from 'react-bootstrap';
-import API from '../api';
+import API, { getErrorMessage } from '../api';
 import { useNavigate } from 'react-router-dom';
 
 function LoginPage() {
@@ -31,7 +31,7 @@ function LoginPage() {
       navigate('/dashboard');
 
     } catch (err) {
-      setError(err.response?.data || 'Login failed. Please check your credentials.');
+      setError(getErrorMessage(err, 'Login failed. Please check your credentials.'));
     }
   };
 

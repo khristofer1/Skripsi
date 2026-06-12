@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Form, Button, Container, Alert } from 'react-bootstrap';
-import API from '../api';
+import API, { getErrorMessage } from '../api';
 import { useNavigate } from 'react-router-dom';
 
 function CreateEventPage() {
@@ -45,7 +45,7 @@ function CreateEventPage() {
       }, 2000);
 
     } catch (err) {
-      setError(err.response?.data?.msg || err.response?.data || 'Failed to create event.');
+      setError(getErrorMessage(err, 'Failed to create event.'));
     }
   };
 

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Form, Button, Container, Alert } from 'react-bootstrap';
-import API from '../api';
+import API, { getErrorMessage } from '../api';
 import { useNavigate, useParams } from 'react-router-dom';
 
 function EditEventPage() {
@@ -55,7 +55,7 @@ function EditEventPage() {
       setSuccess('Event updated successfully! Redirecting...');
       setTimeout(() => navigate('/dashboard'), 2000);
     } catch (err) {
-      setError(err.response?.data || 'Failed to update event.');
+      setError(getErrorMessage(err, 'Failed to update event.'));
     }
   };
 
