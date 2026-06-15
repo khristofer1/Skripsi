@@ -31,4 +31,19 @@ export const getErrorMessage = (err, defaultMsg = 'Something went wrong') => {
   return err.message || defaultMsg;
 };
 
+// Response Interceptor untuk menangani token kedaluwarsa (401 Unauthorized)
+API.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response && error.response.status === 401) {
+      localStorage.removeItem('token');
+      // Arahkan ke halaman login jika terjadi error 401
+      if (window.location.pathname !== '/login' && window.location.pathname !== '/register') {
+        window.location.href = '/login';
+      }
+    }
+    return Promise.reject(error);
+  }
+);
+
 export default API;
