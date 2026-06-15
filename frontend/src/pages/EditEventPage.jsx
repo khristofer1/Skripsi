@@ -11,11 +11,27 @@ function EditEventPage() {
     description: '',
     event_date: '',
     location: '',
-    price: 0,
+    price: '',
   });
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [loading, setLoading] = useState(true);
+
+  // Helper untuk memformat ribuan dengan titik (contoh: 150000 -> "150.000")
+  const formatRibuan = (value) => {
+    if (value === '') return '';
+    if (value === 0 || value === '0') return '0';
+    const numberString = value.toString().replace(/[^0-9]/g, '');
+    if (!numberString) return '';
+    return parseInt(numberString, 10).toLocaleString('id-ID');
+  };
+
+  // Menghilangkan titik sebelum disimpan ke state asli
+  const parseRibuan = (value) => {
+    if (value === '') return '';
+    const rawValue = value.replace(/\./g, '');
+    return parseInt(rawValue, 10) || 0;
+  };
 
   // useEffect untuk mengambil data event yang akan diedit saat halaman dimuat
   useEffect(() => {
@@ -43,15 +59,27 @@ function EditEventPage() {
   }, [id]);
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    if (name === 'price') {
+      setFormData({ ...formData, price: parseRibuan(value) });
+    } else {
+      setFormData({ ...formData, [name]: value });
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const token = localStorage.getItem('token');
     const config = { headers: { 'Authorization': `Bearer ${token}` } };
+    
+    // Bersihkan nilai price jika kosong menjadi 0
+    const submissionData = {
+      ...formData,
+      price: formData.price === '' ? 0 : formData.price
+    };
+
     try {
-      await API.put(`/api/events/${id}`, formData, config);
+      await API.put(`/api/events/${id}`, submissionData, config);
       setSuccess('Event updated successfully! Redirecting...');
       setTimeout(() => navigate('/dashboard'), 2000);
     } catch (err) {
@@ -85,7 +113,7 @@ function EditEventPage() {
         </Form.Group>
         <Form.Group className="mb-3">
           <Form.Label>Price</Form.Label>
-          <Form.Control type="number" name="price" value={formData.price} onChange={handleChange} required />
+          <Form.Control type="text" name="price" value={formatRibuan(formData.price)} onChange={handleChange} required />
         </Form.Group>
         <Button variant="primary" type="submit">Update Event</Button>
       </Form>
