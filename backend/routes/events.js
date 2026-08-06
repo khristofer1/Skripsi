@@ -7,10 +7,15 @@ const db = require('../config/db');
 // Membuat event baru. Hanya bisa diakses oleh user yang sudah login.
 router.post('/', authMiddleware, async (req, res) => {
   const organizer_id = req.user.id;
+  // 1. Menerima data formulir yang dikirim frontend
   const { title, description, event_date, location, price } = req.body;
+
   try {
+    // 2. Query SQL untuk MENAMBAHKAN/MENCATAT event ke tabel 'events'
     const query = 'INSERT INTO events (organizer_id, title, description, event_date, location, price) VALUES (?, ?, ?, ?, ?, ?)';
     await db.query(query, [organizer_id, title, description, event_date, location, price]);
+
+    // 3. Mengembalikan respons sukses ke frontend
     res.status(201).send('Event created successfully');
   } catch (error) {
     console.error(error);
